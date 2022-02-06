@@ -8,12 +8,11 @@ Global Chat Module is a simple global chat for AzerothCore.
 # Functionality
 * How to chat?
     - .chat Message - This works for everyone, GM and players.
-    - /join World and talk as in a normal chat ( This name is subject of change based on the config file )
 
 # Commands
 List of fully functional commands:
 * .chat <$TEXT>
-  - Used to talk on the World Chat
+  - Used to talk on the Global Chat
   
 # Installation
 ## Core Setup
