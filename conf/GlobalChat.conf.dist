@@ -1,0 +1,19 @@
+[worldserver]
+###################################################################################################
+# Azerothcore Global Chat System
+#
+#    GlobalChat.Enable
+#        Description: Enables Global Chat System
+#        Default:     1	- (Enabled)
+#                     0	- (Disabled)
+
+GlobalChat.Enable = 1
+
+#    GlobalChat.Announce
+#        Description: Announces the Global Chat System on character login
+#        Default:     1	- (Enabled)
+#                     0	- (Disabled)
+
+GlobalChat.Announce = 1
+#
+###################################################################################################
