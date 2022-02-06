@@ -3,7 +3,7 @@
 - Latest build status with azerothcore: [![Build Status](https://github.com/azerothcore/mod-global-chat/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-global-chat)
 
 # Description
-Global Chat Module is a simple global chat for AzerothCore.
+Global Chat Module is a simple global chat for AzerothCore. Current Status is WIP at about 95% complete.
 Based in part of the World Chat Module by [wizzymore](https://github.com/azerothcore/mod-world-chat) 
 # Functionality
 * How to chat?
@@ -13,7 +13,23 @@ Based in part of the World Chat Module by [wizzymore](https://github.com/azeroth
 List of fully functional commands:
 * .chat <$TEXT>
   - Used to talk on the Global Chat
-  
+* . chat on
+  - Used to turn on the feature
+* .chat off
+  - Used to turn off the feature
+
+## Notice
+Module works with one exception at the moment.
+Players will still recieve the global messages when they turn off global messages.
+So far the .chat off only seems to turn off sending of the global messags.
+
+## WIP Status
+Currently the only thing left to do is to specify faction only global chatting.
+
+Fix the issue of player still recieving global messages while setting is off.
+
+If chat is off, players are not able to send out global messages but will still recieve them.
+
 # Installation
 ## Core Setup
 
