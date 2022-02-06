@@ -4,7 +4,7 @@
 
 # Description
 Global Chat Module is a simple global chat for AzerothCore.
-
+Based in part of the World Chat Module by [wizzymore](https://github.com/azerothcore/mod-world-chat) 
 # Functionality
 * How to chat?
     - .chat Message - This works for everyone, GM and players.
@@ -23,12 +23,12 @@ To add the module follow the next steps:
 
 On windows, open git bash and paste this command:
 ```
-git clone https://github.com/wizzymore/mod_global_chat.git
+git clone https://github.com/azerothcore/mod_global_chat.git
 ```
 On linux:
 
 ```
-git clone https://github.com/wizzymore/mod_global_chat.git
+git clone https://github.com/azerothcore/mod_global_chat.git
 ```
 
 ## Server Config Setup
