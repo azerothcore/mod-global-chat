@@ -46,8 +46,8 @@ public: GlobalChat_Config() : WorldScript("GlobalChat_Config") { };
       {
           if (!reload)
           {
-              GC_Config.Enabled = sConfigMgr->GetBoolDefault("GlobalChat.Enable", true);
-              GC_Config.Announce = sConfigMgr->GetBoolDefault("GlobalChat.Announce", true);
+              GC_Config.Enabled = sConfigMgr->GetOption<bool>("GlobalChat.Enable", true);
+              GC_Config.Announce = sConfigMgr->GetOption<bool>("GlobalChat.Announce", true);
           }
       }
 };
