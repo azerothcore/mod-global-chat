@@ -132,13 +132,13 @@ public:
     {
         static ChatCommandTable gcCommandTable =
         {
-            { "on",      SEC_PLAYER,     false,     &HandleGlobalChatOnCommand,      "" },
-            { "off",     SEC_PLAYER,     false,    &HandleGlobalChatOffCommand,       "" },
-             { "",        SEC_PLAYER,     false,    &HandleGlobalChatCommand,       "" },
+            { "on",       SEC_PLAYER,     false,     &HandleGlobalChatOnCommand,        "" },
+            { "off",      SEC_PLAYER,     false,     &HandleGlobalChatOffCommand,       "" },
+             { "",        SEC_PLAYER,     false,     &HandleGlobalChatCommand,          "" },
         };
         static ChatCommandTable HandleGlobalChatCommandTable =
         {
-            { "chat", SEC_PLAYER, true, NULL, "", gcCommandTable},
+            { "chat",     SEC_PLAYER,     true,      nullptr,     "",    gcCommandTable},
         };
         return HandleGlobalChatCommandTable;
 
