@@ -30,6 +30,8 @@ const char* CLASS_ICON;
 
 #define FACTION_SPECIFIC 0
 
+using namespace Acore::ChatCommands;
+
 /* Config Variables */
 struct GCConfig
 {
@@ -126,15 +128,15 @@ class cs_global_chat : public CommandScript
 public:
     cs_global_chat() : CommandScript("cs_global_chat") {}
 
-    std::vector<ChatCommand> GetCommands() const override
+    ChatCommandTable GetCommands() const override
     {
-        static std::vector<ChatCommand> gcCommandTable =
+        static ChatCommandTable gcCommandTable =
         {
             { "on",      SEC_PLAYER,     false,     &HandleGlobalChatOnCommand,      "" },
             { "off",     SEC_PLAYER,     false,    &HandleGlobalChatOffCommand,       "" },
              { "",        SEC_PLAYER,     false,    &HandleGlobalChatCommand,       "" },
         };
-        static std::vector<ChatCommand> HandleGlobalChatCommandTable =
+        static ChatCommandTable HandleGlobalChatCommandTable =
         {
             { "chat", SEC_PLAYER, true, NULL, "", gcCommandTable},
         };
