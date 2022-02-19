@@ -352,7 +352,7 @@ public:
         // Announce Module
         if (GC_Config.Enabled && GC_Config.Announce)
         {
-            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00Azerothcore World Chat |rmodule. Use .chat to chat globally");
+            ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00Azerothcore Global Chat |rmodule. Use .chat to chat globally");
         }
     }
 };
