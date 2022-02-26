@@ -1,6 +1,5 @@
 # ![logo](https://raw.githubusercontent.com/azerothcore/azerothcore.github.io/master/images/logo-github.png) AzerothCore
 ## World Chat
-- Latest build status with azerothcore: [![Build Status](https://github.com/azerothcore/mod-global-chat/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-global-chat)
 
 # Description
 Global Chat Module is a simple global chat for AzerothCore. Current Status is WIP at about 95% complete.
