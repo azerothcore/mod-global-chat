@@ -316,9 +316,9 @@ public:
 
         char message[1024];
 
-        SessionMap sessions = sWorldSessionMgr->GetAllSessions();
+        WorldSessionMgr::SessionMap sessions = sWorldSessionMgr->GetAllSessions();
 
-        for (SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
+        for (WorldSessionMgr::SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
         {
             if (!itr->second)
                 continue;
@@ -329,8 +329,8 @@ public:
             msg += args;
             if (FACTION_SPECIFIC)
             {
-                SessionMap sessions = sWorldSessionMgr->GetAllSessions();
-                for (SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
+                WorldSessionMgr::SessionMap sessions = sWorldSessionMgr->GetAllSessions();
+                for (WorldSessionMgr::SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
                     if (Player* plr = itr->second->GetPlayer())
                         if (plr->GetTeamId() == player->GetTeamId())
                             sWorldSessionMgr->SendServerMessage(SERVER_MSG_STRING, msg.c_str(), plr);
