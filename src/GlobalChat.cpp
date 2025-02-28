@@ -272,6 +272,9 @@ public:
 
             // Admin
         case SEC_ADMINISTRATOR:
+            // adding SEC_CONSOLE here to fix build warning
+            // not sure if this needs to be handled separately
+        case SEC_CONSOLE:
             if (player->GetTeamId() == TEAM_ALLIANCE)
             {
                 msg += "|cffABD473[Global] ";
