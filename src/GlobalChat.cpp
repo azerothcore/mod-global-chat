@@ -15,15 +15,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ScriptMgr.h"
-#include "Log.h"
-#include "Player.h"
 #include "Channel.h"
 #include "Chat.h"
 #include "Common.h"
+#include "Config.h"
+#include "Log.h"
+#include "Player.h"
+#include "ScriptMgr.h"
 #include "World.h"
 #include "WorldSession.h"
-#include "Config.h"
+#include "WorldSessionMgr.h"
+
 #include <unordered_map>
 
 const char* CLASS_ICON;
@@ -43,15 +45,19 @@ GCConfig GC_Config;
 
 class GlobalChat_Config : public WorldScript
 {
-public: GlobalChat_Config() : WorldScript("GlobalChat_Config") { };
-      void OnBeforeConfigLoad(bool reload) override
-      {
-          if (!reload)
-          {
-              GC_Config.Enabled = sConfigMgr->GetOption<bool>("GlobalChat.Enable", true);
-              GC_Config.Announce = sConfigMgr->GetOption<bool>("GlobalChat.Announce", true);
-          }
-      }
+public:
+    GlobalChat_Config() : WorldScript("GlobalChat_Config", {
+        WORLDHOOK_ON_BEFORE_CONFIG_LOAD
+    }) {}
+
+    void OnBeforeConfigLoad(bool reload) override
+    {
+        if (!reload)
+        {
+          GC_Config.Enabled = sConfigMgr->GetOption<bool>("GlobalChat.Enable", true);
+          GC_Config.Announce = sConfigMgr->GetOption<bool>("GlobalChat.Announce", true);
+        }
+    }
 };
 
 /* STRUCTURE FOR GlobalChat map */
@@ -132,19 +138,19 @@ public:
     {
         static ChatCommandTable gcCommandTable =
         {
-            { "on",       SEC_PLAYER,     false,     &HandleGlobalChatOnCommand,        "" },
-            { "off",      SEC_PLAYER,     false,     &HandleGlobalChatOffCommand,       "" },
-             { "",        SEC_PLAYER,     false,     &HandleGlobalChatCommand,          "" },
+            { "on",  HandleGlobalChatOnCommand,  SEC_PLAYER, Console::Yes },
+            { "off", HandleGlobalChatOffCommand, SEC_PLAYER, Console::Yes },
+            { "",    HandleGlobalChatCommand,    SEC_PLAYER, Console::Yes }
         };
         static ChatCommandTable HandleGlobalChatCommandTable =
         {
-            { "chat",     SEC_PLAYER,     true,      nullptr,     "",    gcCommandTable},
+            { "chat", gcCommandTable }
         };
         return HandleGlobalChatCommandTable;
 
     }
 
-    static bool HandleGlobalChatOnCommand(ChatHandler* handler, const char* /*msg*/)
+    static bool HandleGlobalChatOnCommand(ChatHandler* handler)
     {
         Player* player = handler->GetSession()->GetPlayer();
         uint64 guid = player->GetGUID().GetCounter();
@@ -168,7 +174,7 @@ public:
         return true;
     };
 
-    static bool HandleGlobalChatOffCommand(ChatHandler* handler, const char* /*msg*/)
+    static bool HandleGlobalChatOffCommand(ChatHandler* handler)
     {
         Player* player = handler->GetSession()->GetPlayer();
         uint64 guid = player->GetGUID().GetCounter();
@@ -192,13 +198,13 @@ public:
         return true;
     };
 
-    static bool HandleGlobalChatCommand(ChatHandler* handler, const char* args)
+    static bool HandleGlobalChatCommand(ChatHandler* handler, std::string args)
     {
         if (!handler->GetSession()->GetPlayer())
             return false;
         std::string temp = args;
 
-        if (!args || temp.find_first_not_of(' ') == std::string::npos)
+        if (temp.find_first_not_of(' ') == std::string::npos)
             return false;
 
         std::string msg = "";
@@ -215,7 +221,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -235,7 +240,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -256,7 +260,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -269,6 +272,9 @@ public:
 
             // Admin
         case SEC_ADMINISTRATOR:
+            // adding SEC_CONSOLE here to fix build warning
+            // not sure if this needs to be handled separately
+        case SEC_CONSOLE:
             if (player->GetTeamId() == TEAM_ALLIANCE)
             {
                 msg += "|cffABD473[Global] ";
@@ -277,7 +283,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -308,36 +313,32 @@ public:
             return false;
         }
 
-        char message[1024];
+        WorldSessionMgr::SessionMap sessions = sWorldSessionMgr->GetAllSessions();
 
-        SessionMap sessions = sWorld->GetAllSessions();
-
-        for (SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
+        for (WorldSessionMgr::SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
         {
             if (!itr->second)
                 continue;
             if (!itr->second->GetPlayer())
-            {
                 continue;
-            }
             if (!itr->second->GetPlayer()->IsInWorld())
-            {
                 continue;
-            }
             msg += args;
             if (FACTION_SPECIFIC)
             {
-                SessionMap sessions = sWorld->GetAllSessions();
-                for (SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
+                WorldSessionMgr::SessionMap sessions = sWorldSessionMgr->GetAllSessions();
+                for (WorldSessionMgr::SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
                     if (Player* plr = itr->second->GetPlayer())
                         if (plr->GetTeamId() == player->GetTeamId())
-                            sWorld->SendServerMessage(SERVER_MSG_STRING, msg.c_str(), plr);
+                            sWorldSessionMgr->SendServerMessage(SERVER_MSG_STRING, msg.c_str(), plr);
             }
             else
-                sWorld->SendServerMessage(SERVER_MSG_STRING, msg.c_str(), 0);
+                sWorldSessionMgr->SendServerMessage(SERVER_MSG_STRING, msg.c_str(), 0);
 
             return true;
         }
+
+        return true;
     }
 };
 
@@ -345,15 +346,15 @@ class GlobalChat_Announce : public PlayerScript
 {
 public:
 
-    GlobalChat_Announce() : PlayerScript("GlobalChat_Announce") {}
+    GlobalChat_Announce() : PlayerScript("GlobalChat_Announce", {
+        PLAYERHOOK_ON_LOGIN
+    }) {}
 
-    void OnLogin(Player* player)
+    void OnPlayerLogin(Player* player) override
     {
         // Announce Module
         if (GC_Config.Enabled && GC_Config.Announce)
-        {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00Azerothcore Global Chat |rmodule. Use .chat to chat globally");
-        }
     }
 };
 
