@@ -138,19 +138,19 @@ public:
     {
         static ChatCommandTable gcCommandTable =
         {
-            { "on",       SEC_PLAYER,     false,     &HandleGlobalChatOnCommand,        "" },
-            { "off",      SEC_PLAYER,     false,     &HandleGlobalChatOffCommand,       "" },
-             { "",        SEC_PLAYER,     false,     &HandleGlobalChatCommand,          "" },
+            { "on",  HandleGlobalChatOnCommand,  SEC_PLAYER, Console::Yes },
+            { "off", HandleGlobalChatOffCommand, SEC_PLAYER, Console::Yes },
+            { "",    HandleGlobalChatCommand,    SEC_PLAYER, Console::Yes }
         };
         static ChatCommandTable HandleGlobalChatCommandTable =
         {
-            { "chat",     SEC_PLAYER,     true,      nullptr,     "",    gcCommandTable},
+            { "chat", gcCommandTable }
         };
         return HandleGlobalChatCommandTable;
 
     }
 
-    static bool HandleGlobalChatOnCommand(ChatHandler* handler, const char* /*msg*/)
+    static bool HandleGlobalChatOnCommand(ChatHandler* handler)
     {
         Player* player = handler->GetSession()->GetPlayer();
         uint64 guid = player->GetGUID().GetCounter();
@@ -174,7 +174,7 @@ public:
         return true;
     };
 
-    static bool HandleGlobalChatOffCommand(ChatHandler* handler, const char* /*msg*/)
+    static bool HandleGlobalChatOffCommand(ChatHandler* handler)
     {
         Player* player = handler->GetSession()->GetPlayer();
         uint64 guid = player->GetGUID().GetCounter();
@@ -198,13 +198,13 @@ public:
         return true;
     };
 
-    static bool HandleGlobalChatCommand(ChatHandler* handler, const char* args)
+    static bool HandleGlobalChatCommand(ChatHandler* handler, std::string args)
     {
         if (!handler->GetSession()->GetPlayer())
             return false;
         std::string temp = args;
 
-        if (!args || temp.find_first_not_of(' ') == std::string::npos)
+        if (temp.find_first_not_of(' ') == std::string::npos)
             return false;
 
         std::string msg = "";
