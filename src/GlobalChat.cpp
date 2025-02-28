@@ -221,7 +221,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -241,7 +240,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -262,7 +260,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
@@ -283,7 +280,6 @@ public:
                 msg += GetNameLink(player);
                 msg += " |cfffaeb00";
             }
-
             else
             {
                 msg += "|cffABD473[Global] ";
