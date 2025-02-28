@@ -337,9 +337,9 @@ public:
 
             return true;
         }
-    }
 
-    return true;
+        return true;
+    }
 };
 
 class GlobalChat_Announce : public PlayerScript
