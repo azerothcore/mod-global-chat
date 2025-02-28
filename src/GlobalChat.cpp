@@ -313,8 +313,6 @@ public:
             return false;
         }
 
-        char message[1024];
-
         WorldSessionMgr::SessionMap sessions = sWorldSessionMgr->GetAllSessions();
 
         for (WorldSessionMgr::SessionMap::iterator itr = sessions.begin(); itr != sessions.end(); ++itr)
