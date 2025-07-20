@@ -38,12 +38,12 @@ To add the module follow the next steps:
 
 On windows, open git bash and paste this command:
 ```
-git clone https://github.com/azerothcore/mod_global_chat.git
+git clone https://github.com/azerothcore/mod-global-chat.git
 ```
 On linux:
 
 ```
-git clone https://github.com/azerothcore/mod_global_chat.git
+git clone https://github.com/azerothcore/mod-global-chat.git
 ```
 
 ## Server Config Setup
